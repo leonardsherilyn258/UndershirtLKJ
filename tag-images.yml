@@ -1,7 +1,6 @@
 name: Tag Docker Version
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   workflow_dispatch:
     inputs:
@@ -12,8 +11,6 @@ on:
 
 jobs:
   tag_images:
-    runs-on: ubuntu-latest
-    timeout-minutes: 80
     environment: Production
     permissions:
       contents: read
@@ -98,7 +95,6 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           GH_ACTOR: ${{ github.actor }}
           GH_PASSWORD: ${{ secrets.GH_PACKAGES }}
-          DOCKER_VERSION: ${{ inputs.version }}
         run: |
           docker pull ghcr.io/$REGISTRY_OWNER/$DOCKER_NAME:prod
           docker tag ghcr.io/$REGISTRY_OWNER/$DOCKER_NAME:prod ghcr.io/$REGISTRY_OWNER/$DOCKER_NAME:$DOCKER_VERSION
